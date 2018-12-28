@@ -32,7 +32,7 @@ from keras.layers import Dense
 classifier = Sequential()
 
 # Step 1 - Convolution
-classifier.add(Convolution2D(32, 3, 3, input_shape = (128, 128, 3), activation = 'relu'))
+classifier.add(Convolution2D(32, 3, 3, input_shape = (256, 256, 3), activation = 'relu'))
 
 # Step 2 - Pooling
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
@@ -46,6 +46,12 @@ classifier.add(Convolution2D(128, 3, 3, activation = 'relu'))
 classifier.add(MaxPooling2D(pool_size = (2, 2))) 
 
 # Fourth Convolutional and Pooling Layer
+classifier.add(Convolution2D(256, 3, 3, activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2, 2))) 
+
+classifier.add(Convolution2D(128, 3, 3, activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2, 2))) 
+
 classifier.add(Convolution2D(256, 3, 3, activation = 'relu'))
 classifier.add(MaxPooling2D(pool_size = (2, 2))) 
 
@@ -77,21 +83,21 @@ train_datagen = ImageDataGenerator(rescale = 1./255,
 
 test_datagen = ImageDataGenerator(rescale = 1./255)
 
-training_set = train_datagen.flow_from_directory('dataset/python-train',
-                                                 target_size = (128,128),
+training_set = train_datagen.flow_from_directory('datasets/phase4/train',
+                                                 target_size = (256,256),
                                                  batch_size = 32,
                                                  class_mode = 'binary')
 
-test_set = test_datagen.flow_from_directory('dataset/python-test',
-                                            target_size = (128,128),
+test_set = test_datagen.flow_from_directory('datasets/phase4/test',
+                                            target_size = (256,256),
                                             batch_size = 32,
                                             class_mode = 'binary')
 
 classifier.fit_generator(training_set,
-                         steps_per_epoch=106,
+                         steps_per_epoch=80,
                          epochs =10,
                          validation_data = test_set,
-                         validation_steps=28
+                         validation_steps=20
                          )
 
 # =============================================================================
@@ -104,7 +110,7 @@ classifier.fit_generator(training_set,
 # Part 3 - Save the model file
 # =============================================================================
 
-classifier.save('models/python_model.h5')
+classifier.save('models/phase4_model.h5')
 
 # =============================================================================
 # End of Part 3
